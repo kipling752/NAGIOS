@@ -1,0 +1,52 @@
+#installation des packages necessaires
+yum install postfix cyrus-sasl-plain mailx -y
+
+#Configuration de postfix pour Gmail, activer STARTTLS Encryption
+
+sed -i 's/smtp_tls_security_level = may/smtp_tls_security_level = encrypt/' /etc/postfix/main.cf
+
+echo "smtp_tls_security_level = encrypt" >> /etc/postfix/main.cf
+
+echo "smtp_tls_security_level = encrypt" >> /etc/postfix/main.cf
+
+echo "smtp_tls_CAfile = /etc/pki/tls/certs/ca-bundle.crt" >> /etc/postfix/main.cf
+
+echo "smtp_tls_CAfile = /etc/pki/tls/certs/ca-bundle.crt" >> /etc/postfix/main.cf
+
+#Definir l'agent relai Gmail et SASL
+cat >> /etc/postfix/main.cf << EOF
+relayhost = [smtp.gmail.com]:587
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous
+EOF
+
+vim /usr/local/nagios/etc/objects/contacts.cfg
+
+#Configurer SASL pour le Compte gmail avec mot de passe Application
+vim /etc/postfix/sasl_passwd
+
+[smtp.gmail.com]:587 hanak638@gmail.com:[votre_de_passe]
+
+#Generer un postfix lookup
+postmap /etc/postfix/sasl_passwd
+
+#Changer les permissions
+chown root:root /etc/postfix/sasl_passwd*
+chmod 600 /etc/postfix/sasl_passwd*
+
+
+#Activer postfix au démarrage 
+systemctl enable postfix --now
+
+
+#Tester l'envoi de mail sur gmail
+echo "Test Postfix Gmail Relay" | mail -s "Postfix Gmail Relay" aymanadj3@gmail.com
+
+#verification de la config nagios
+/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+
+#redemarer nagios
+systemctl restart nagios
+
+
