@@ -41,7 +41,7 @@ systemctl enable postfix --now
 
 
 #Tester l'envoi de mail sur gmail
-echo "Test Postfix Gmail Relay" | mail -s "Postfix Gmail Relay" aymanadj3@gmail.com
+echo "Test Postfix Gmail Relay" | mail -s "Postfix Gmail Relay" hanak638@gmail.com
 
 #verification de la config nagios
 /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
