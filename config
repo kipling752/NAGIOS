@@ -15,7 +15,7 @@ echo "smtp_tls_CAfile = /etc/pki/tls/certs/ca-bundle.crt" >> /etc/postfix/main.c
 
 #Definir l'agent relai Gmail et SASL
 cat >> /etc/postfix/main.cf << EOF
-relayhost = willndourr@gmail.com:587
+relayhost = [YOUR_MAIL_]:587
 smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
 smtp_sasl_security_options = noanonymous
